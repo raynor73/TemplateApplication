@@ -11,7 +11,7 @@ appAndroidTestRootPath = "./app/src/androidTest/java/"
 templateId = "ilapin.template"
 applicationId = sys.argv[1]
 
-applcationIdParts = applicationId.split(".")
+applicationIdParts = applicationId.split(".")
 applicationIdBeginning = applicationIdParts[:-1]
 applicationIdPathBeginning = "/".join(applicationIdBeginning)
 applicationIdPathBeginning.mkdir(parents = True, exist_ok = True)
