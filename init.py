@@ -40,4 +40,4 @@ shutil.move(
 
 appAndroidTestKtFiles = list(Path(appAndroidTestRootPath).rglob("*.kt"))
 for filePath in appAndroidTestKtFiles:
-	updateAppIdInFile(filePath, templateId, applicationId)
+	updateAppIdInFile(str(filePath), templateId, applicationId)
