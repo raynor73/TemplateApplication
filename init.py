@@ -26,7 +26,7 @@ if (len(sys.argv) <= 1):
 	exit()
 
 appAndroidTestRootPath = "./app/src/androidTest/java/"
-templateId = "ilapin.template"
+placeholderAppId = "ilapin.template"
 applicationId = sys.argv[1]
 
 applicationIdParts = applicationId.split(".")
@@ -34,10 +34,12 @@ applicationIdBeginning = applicationIdParts[:-1]
 applicationIdPathBeginning = "/".join(applicationIdBeginning)
 Path(applicationIdPathBeginning).mkdir(parents = True, exist_ok = True)
 shutil.move(
-	appAndroidTestRootPath + templateId.replace(".", "/"),
+	appAndroidTestRootPath + placeholderAppId.replace(".", "/"),
 	appAndroidTestRootPath + applicationId.replace(".", "/")
 )
 
 appAndroidTestKtFiles = list(Path(appAndroidTestRootPath).rglob("*.kt"))
 for filePath in appAndroidTestKtFiles:
-	updateAppIdInFile(str(filePath), templateId, applicationId)
+	updateAppIdInFile(str(filePath), placeholderAppId, applicationId)
+
+updateAppIdInFile("./app/build.gradle", placeholderAppId, applicationId)
