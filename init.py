@@ -21,6 +21,16 @@ def updateAppIdInFile(filePath, placeholderAppId, appId):
 
 	os.remove(filePathOld)
 
+def updateDirStructureUsingAppId(rootPath, placeholderAppId, appId):
+	applicationIdParts = appId.split(".")
+	applicationIdBeginning = applicationIdParts[:-1]
+	applicationIdPathBeginning = "/".join(applicationIdBeginning)
+	Path(rootPath + applicationIdPathBeginning).mkdir(parents = True, exist_ok = True)
+	shutil.move(
+		rootPath + placeholderAppId.replace(".", "/"),
+		rootPath + appId.replace(".", "/")
+	)
+
 if (len(sys.argv) <= 1):
 	print("Usage:", sys.argv[0], "APPLICATION_ID")
 	exit()
@@ -30,13 +40,15 @@ appTestRootPath = "./app/src/test/java/"
 placeholderAppId = "ilapin.template"
 applicationId = sys.argv[1]
 
-applicationIdParts = applicationId.split(".")
-applicationIdBeginning = applicationIdParts[:-1]
-applicationIdPathBeginning = "/".join(applicationIdBeginning)
-Path(applicationIdPathBeginning).mkdir(parents = True, exist_ok = True)
+#updateDirStructureUsingAppId(appAndroidTestRootPath, placeholderAppId, applicationId)
+#updateDirStructureUsingAppId(appTestRootPath, placeholderAppId, applicationId)
 shutil.move(
 	appAndroidTestRootPath + placeholderAppId.replace(".", "/"),
 	appAndroidTestRootPath + applicationId.replace(".", "/")
+)
+shutil.move(
+	appTestRootPath + placeholderAppId.replace(".", "/"),
+	appTestRootPath + applicationId.replace(".", "/")
 )
 
 appAndroidTestKtFiles = list(Path(appAndroidTestRootPath).rglob("*.kt"))
