@@ -21,6 +21,34 @@ def updateAppIdInFile(filePath, placeholderAppId, appId):
 
 	os.remove(filePathOld)
 
+def processAppModule(androidTestRootPath, testRootPath, rootPath, placeholderAppId, appId):
+	shutil.move(
+		androidTestRootPath + placeholderAppId.replace(".", "/"),
+		androidTestRootPath + appId.replace(".", "/")
+	)
+	shutil.move(
+		testRootPath + placeholderAppId.replace(".", "/"),
+		testRootPath + appId.replace(".", "/")
+	)
+	shutil.move(
+		rootPath + placeholderAppId.replace(".", "/"),
+		rootPath + appId.replace(".", "/")
+	)
+
+	appAndroidTestKtFiles = list(Path(androidTestRootPath).rglob("*.kt"))
+	for filePath in appAndroidTestKtFiles:
+		updateAppIdInFile(str(filePath), placeholderAppId, appId)
+
+	appTestKtFiles = list(Path(testRootPath).rglob("*.kt"))
+	for filePath in appTestKtFiles:
+		updateAppIdInFile(str(filePath), placeholderAppId, appId)
+
+	appKtFiles = list(Path(rootPath).rglob("*.kt"))
+	for filePath in appKtFiles:
+		updateAppIdInFile(str(filePath), placeholderAppId, appId)
+
+	updateAppIdInFile("./app/build.gradle", placeholderAppId, appId)
+
 if (len(sys.argv) <= 1):
 	print("Usage:", sys.argv[0], "APPLICATION_ID")
 	exit()
@@ -31,29 +59,7 @@ appRootPath = "./app/src/main/java/"
 placeholderAppId = "ilapin.template"
 applicationId = sys.argv[1]
 
-shutil.move(
-	appAndroidTestRootPath + placeholderAppId.replace(".", "/"),
-	appAndroidTestRootPath + applicationId.replace(".", "/")
-)
-shutil.move(
-	appTestRootPath + placeholderAppId.replace(".", "/"),
-	appTestRootPath + applicationId.replace(".", "/")
-)
-shutil.move(
-	appRootPath + placeholderAppId.replace(".", "/"),
-	appRootPath + applicationId.replace(".", "/")
+processAppModule(
+	appAndroidTestRootPath, appTestRootPath, appRootPath, placeholderAppId, applicationId
 )
 
-appAndroidTestKtFiles = list(Path(appAndroidTestRootPath).rglob("*.kt"))
-for filePath in appAndroidTestKtFiles:
-	updateAppIdInFile(str(filePath), placeholderAppId, applicationId)
-
-appTestKtFiles = list(Path(appTestRootPath).rglob("*.kt"))
-for filePath in appTestKtFiles:
-	updateAppIdInFile(str(filePath), placeholderAppId, applicationId)
-
-appKtFiles = list(Path(appRootPath).rglob("*.kt"))
-for filePath in appKtFiles:
-	updateAppIdInFile(str(filePath), placeholderAppId, applicationId)
-
-updateAppIdInFile("./app/build.gradle", placeholderAppId, applicationId)
