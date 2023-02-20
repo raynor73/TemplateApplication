@@ -63,3 +63,10 @@ processAppModule(
 	appAndroidTestRootPath, appTestRootPath, appRootPath, placeholderAppId, applicationId
 )
 
+processAppModule(
+	"./core/src/androidTest/java/",
+	"./core/src/test/java/",
+	"./core/src/main/java/",
+	"ilapin.template.core",
+	applicationId + ".core"
+)
