@@ -49,6 +49,42 @@ def processAppModule(androidTestRootPath, testRootPath, rootPath, placeholderApp
 
 	updateAppIdInFile("./app/build.gradle", placeholderAppId, appId)
 
+def processCoreModule(androidTestRootPath, testRootPath, rootPath, placeholderAppId, appId):
+	androidTestPlaceholderPathNoModuleName = androidTestRootPath + placeholderAppId.replace(".", "/")
+	shutil.move(
+		androidTestPlaceholderPathNoModuleName + "/core",
+		androidTestRootPath + appId.replace(".", "/") + "/core"
+	)
+	os.rmdir(androidTestPlaceholderPathNoModuleName)
+
+	testPlaceholderPathNoModuleName = testRootPath + placeholderAppId.replace(".", "/")
+	shutil.move(
+		testPlaceholderPathNoModuleName + "/core",
+		testRootPath + appId.replace(".", "/") + "/core"
+	)
+	os.rmdir(testPlaceholderPathNoModuleName)
+
+	placeholderPathNoModuleName = rootPath + placeholderAppId.replace(".", "/")
+	shutil.move(
+		placeholderPathNoModuleName + "/core",
+		rootPath + appId.replace(".", "/") + "/core"
+	)
+	os.rmdir(placeholderPathNoModuleName)
+
+	appAndroidTestKtFiles = list(Path(androidTestRootPath).rglob("*.kt"))
+	for filePath in appAndroidTestKtFiles:
+		updateAppIdInFile(str(filePath), placeholderAppId, appId)
+
+	appTestKtFiles = list(Path(testRootPath).rglob("*.kt"))
+	for filePath in appTestKtFiles:
+		updateAppIdInFile(str(filePath), placeholderAppId, appId)
+
+	appKtFiles = list(Path(rootPath).rglob("*.kt"))
+	for filePath in appKtFiles:
+		updateAppIdInFile(str(filePath), placeholderAppId, appId)
+
+	updateAppIdInFile("./core/build.gradle", placeholderAppId, appId)
+
 if (len(sys.argv) <= 1):
 	print("Usage:", sys.argv[0], "APPLICATION_ID")
 	exit()
@@ -63,10 +99,10 @@ processAppModule(
 	appAndroidTestRootPath, appTestRootPath, appRootPath, placeholderAppId, applicationId
 )
 
-processAppModule(
+processCoreModule(
 	"./core/src/androidTest/java/",
 	"./core/src/test/java/",
 	"./core/src/main/java/",
-	"ilapin.template.core",
-	applicationId + ".core"
+	"ilapin.template",
+	applicationId
 )
