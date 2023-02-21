@@ -66,10 +66,10 @@ dependencies {
     api 'androidx.compose.material:material'
     api 'androidx.compose.ui:ui'
 
-    testApi 'junit:junit:4.13.2'
-    testApi "org.mockito.kotlin:mockito-kotlin:$mockitoVersion"
-    testApi "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 
-    androidTestApi 'androidx.test.ext:junit:1.1.5'
-    androidTestApi 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
